@@ -1,12 +1,9 @@
-非阻塞+ET+epoll(封装成类)
+非阻塞+ET+epoll(增加Channel类，包含fd相关的详细信息)
 
-（1）切换到src目录下，运行以下命令
+切换到test目录下，运行以下命令
 ```bash
-make
+make server     //编译服务器
+make client     //编译客户端
 ./server 9527   //可自己指定端口号
-```
-（2）切换到test目录下，运行以下命令
-```bash
-make
 ./client 9527   //可自己指定端口号
 ```
