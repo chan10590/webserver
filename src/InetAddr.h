@@ -12,7 +12,7 @@ class InetAddr
 {
 public:
     // 在Socket类中会被使用，因此需要设为public；设为private就需要成员函数获取私有的成员变量
-    struct sockaddr_in m_addr;
+    struct sockaddr_in m_addr; 
     socklen_t m_addr_len;
     InetAddr():m_addr_len(sizeof(m_addr)){
         memset(&m_addr, 0, sizeof(m_addr));

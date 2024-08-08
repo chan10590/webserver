@@ -20,7 +20,7 @@ int main(int argc, char* argv[]){
     servsock.sin_port = htons(port);
     web::errorExit(connect(cfd, reinterpret_cast<sockaddr*>(&servsock),static_cast<socklen_t>(sizeof(servsock))) < 0, "connect fail!");
     while(1){
-        char buf[4096];
+        char buf[1024];
         std::cout << "input: "<< std::endl;
         std::cin >> buf;
         write(cfd,buf,strlen(buf));

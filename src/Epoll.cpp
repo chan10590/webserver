@@ -18,21 +18,31 @@ Epoll::~Epoll(){
     delete[] m_evarr;
     memset(m_evarr, 0, sizeof(*m_evarr)*MAXEVENT);
 }
-/*设置fd的监听事件，并上epoll树*/
-void Epoll::addNode(int fd, uint32_t ev_events){
-    struct epoll_event ev;
-    ev.data.fd = fd;
-    ev.events = ev_events;
-    errorExit(epoll_ctl(m_epfd, EPOLL_CTL_ADD, fd, &ev) == -1, "epoll add fail!");
-}
 /*获取触发监听事件的事件集合*/
-std::vector<epoll_event*> Epoll::triggerNodeSet(int timeout){
-    std::vector<epoll_event*> trig_evs;
+std::vector<Channel*> Epoll::triggerNodeSet(int timeout){   
+    std::vector<Channel*> trig_chs;
     int trignum = epoll_wait(m_epfd, m_evarr, MAXEVENT, timeout);
     errorExit(trignum==-1,"gain trigger set fail!");
     for(int i=0; i<trignum; i++){
-        trig_evs.emplace_back(&m_evarr[i]);
+        Channel *ch = (Channel*)m_evarr[i].data.ptr;
+        ch->setRevents(m_evarr[i].events);
+        trig_chs.push_back(ch);
     }
-    return trig_evs;
+    return trig_chs;
+}
+/*通过channel构建事件节点，并上epoll树*/
+void Epoll::addChannel(Channel* channel){
+    int fd = channel->getFd();
+    struct epoll_event ev;
+    memset(&ev, 0, sizeof(ev));
+    ev.data.ptr = channel;
+    ev.events = channel->getEvents();
+    // channel不在epoll上，就加到epoll上
+    if(!channel->getInEpoll()){
+        errorExit(epoll_ctl(m_epfd, EPOLL_CTL_ADD, fd, &ev) == -1, "epoll add fail!");
+        channel->setInEpoll();
+    }else{
+        errorExit(epoll_ctl(m_epfd, EPOLL_CTL_MOD, fd, &ev) == -1, "epoll modify fail!");
+    }
 }
 }

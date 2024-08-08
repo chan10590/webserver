@@ -10,14 +10,14 @@ class InetAddr;
 class Socket : public Noncopyable{
 public:
     Socket();
+    Socket(int fd);
     ~Socket();
 
     void setsockopt(int optval = 1);
     void bind(const InetAddr& ipaddr);
     void listen();
-    void setnonblocking(int fd);
     int accept(InetAddr& ipaddr);
-    int getfd();
+    int getFd();
 private:
     int m_fd;
 };

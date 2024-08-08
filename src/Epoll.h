@@ -3,9 +3,11 @@
 #include <sys/epoll.h>
 #include <vector>
 #include "../util/noncopyable.h"
+#include "Channel.h"
 
 namespace web{
 class Noncopyable;
+class Channel;
 /* epoll相关操作
  * epfd epoll根节点
  * evmax 结构体数组，每个元素为epoll_event，包含fd及相应监听事件
@@ -18,9 +20,9 @@ private:
 public:
     Epoll();
     ~Epoll();
-    void addNode(int fd, uint32_t ev_events);
-    //void delNode();
-    std::vector<epoll_event*> triggerNodeSet(int timeout = -1);
+
+    std::vector<Channel*> triggerNodeSet(int timeout = -1);
+    void addChannel(Channel* channel);
 };    
 }
 
