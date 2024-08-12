@@ -1,10 +1,10 @@
+#include "../util/util.h"
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <string>
 #include <iostream>
 #include <string.h>
 #include <fcntl.h>
-#include "../util/util.h"
 
 int main(int argc, char* argv[]){
     if(argc < 2){
