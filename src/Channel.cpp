@@ -1,6 +1,15 @@
 #include "Channel.h"
+#include <iostream>
 
 namespace web {
+    Channel::Channel(EventLoop* evloop, int fd) : m_evloop(evloop), m_fd(fd), m_events(0), m_revents(0), m_in_epoll(false) {
+
+    }
+
+    Channel::~Channel() {
+
+    }
+
     int Channel::getFd() {
         return m_fd;
     }
@@ -36,7 +45,12 @@ namespace web {
     }
 
     void Channel::handleEvent() {
-        m_event_cb();
+        //m_event_cb();
+        if (m_event_cb) {
+        m_event_cb(); // 调用回调函数
+        } else {
+            std::cerr << "Event callback is not set!" << std::endl;
+        }
     }
     
 }

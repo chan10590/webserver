@@ -1,6 +1,25 @@
 #include "Epoll.h"
+#include "../util/util.h"
+#include "Channel.h"
+#include <string.h>
+#include <unistd.h>
+#include <iostream>
 
 namespace web {
+    Epoll::Epoll() : m_epfd(-1), m_evarr(new epoll_event[MAXEVENT]) {
+        m_epfd = epoll_create1(0);
+        errorExit(m_epfd == -1, "epoll create fail!");
+        memset(m_evarr, 0, sizeof(*m_evarr) * MAXEVENT);
+    }
+
+    Epoll::~Epoll() {
+        if(m_epfd != -1){
+            close(m_epfd);
+            m_epfd = -1;
+        }
+        delete[] m_evarr;
+        memset(m_evarr, 0, sizeof(*m_evarr) * MAXEVENT);
+    }
     /*获取触发监听事件的事件集合*/
     std::vector<Channel* > Epoll::trigChannelSet(int timeout) {   
         std::vector<Channel*> trig_chs;
@@ -17,6 +36,7 @@ namespace web {
     /*通过channel构建事件节点，并上epoll树*/
     void Epoll::addChannel(Channel* channel) {
         int fd = channel->getFd();
+        std::cout << "add " << fd << " to epoll!" << std::endl;
         struct epoll_event ev;
         memset(&ev, 0, sizeof(ev));
         ev.data.ptr = channel;

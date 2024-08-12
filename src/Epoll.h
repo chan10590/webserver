@@ -4,11 +4,7 @@
 #define MAXEVENT 1024
 
 #include "../util/noncopyable.h"
-#include "../util/util.h"
-#include "Channel.h"
 #include <sys/epoll.h>
-#include <string.h>
-#include <unistd.h>
 #include <vector>
 
 namespace web {
@@ -23,19 +19,8 @@ namespace web {
         int m_epfd;
         struct epoll_event* m_evarr;
     public:
-        Epoll() : m_epfd(-1), m_evarr(new epoll_event[MAXEVENT]) {
-            m_epfd = epoll_create1(0);
-            errorExit(m_epfd == -1, "epoll create fail!");
-            memset(m_evarr, 0, sizeof(*m_evarr) * MAXEVENT);
-        }
-        ~Epoll() {
-            if(m_epfd != -1){
-                close(m_epfd);
-                m_epfd = -1;
-            }
-            delete[] m_evarr;
-            memset(m_evarr, 0, sizeof(*m_evarr) * MAXEVENT);
-        }
+        Epoll();
+        ~Epoll();
 
         std::vector<Channel* > trigChannelSet(int timeout = -1);
         void addChannel(Channel* channel);

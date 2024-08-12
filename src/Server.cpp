@@ -2,6 +2,8 @@
 #include "Server.h"
 #include "Socket.h"
 #include "Channel.h"
+#include "InetAddr.h"
+#include <cstring>
 #include <iostream>
 #include <functional>
 #include <unistd.h>
