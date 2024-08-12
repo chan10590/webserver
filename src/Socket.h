@@ -2,8 +2,6 @@
 #define WEB_SOCKET_H_
 
 #include "../util/noncopyable.h"
-#include "InetAddr.h"
-#include <unistd.h>
 
 namespace web {
     class Noncopyable;
@@ -13,24 +11,15 @@ namespace web {
     private:
         int m_fd;
     public:
-        Socket() : m_fd(-1) {
-            m_fd = ::socket(AF_INET, SOCK_STREAM, 0);
-            errorExit(m_fd == -1, "socket create fail!");
-        }
-        Socket(int fd) : m_fd(fd) {
-            errorExit(m_fd == -1, "socket create fail!");
-        }
-        ~Socket() {
-            if(m_fd != -1) {
-                close(m_fd);
-                m_fd = -1;
-            }
-        }
+        Socket();
+        Socket(int fd);
+        ~Socket();
 
         void setsockopt(int optval = 1);
         void bind(InetAddr* ipaddr);
         void listen();
         int accept(InetAddr* ipaddr);
+        void setnonblocking();
         int getFd();
     };
 }

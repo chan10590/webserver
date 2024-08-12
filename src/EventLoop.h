@@ -2,6 +2,7 @@
 #define WEB_EVENTLOOP_H_
 
 #include "Epoll.h"
+#include "Channel.h"
 
 namespace web {
     class Epoll;
@@ -12,14 +13,8 @@ namespace web {
         Epoll* m_ep;
         bool m_quit;
     public:
-        EventLoop() : m_ep(new Epoll()), m_quit(false) {
-        }
-        ~EventLoop() {
-            if(m_ep) {
-                delete m_ep;
-                m_ep = nullptr;
-            }
-        }
+        EventLoop();
+        ~EventLoop();
 
         void loop();
         void addChannel(Channel* ch);

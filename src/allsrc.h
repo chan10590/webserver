@@ -7,5 +7,7 @@
 #include "Channel.h"
 #include "EventLoop.h"
 #include "Server.h"
+#include "Listener.h"
+#include "Connection.h"
 
 #endif

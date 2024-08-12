@@ -14,12 +14,5 @@ namespace web {
             exit(1);
         }
     }
-
-    /*设置非阻塞*/
-    void setNonblocking(int fd){
-        int flag = fcntl(fd, F_GETFL, 0);
-        flag |= O_NONBLOCK;
-        errorExit(fcntl(fd, F_SETFL, flag) == -1, "nonblock fail!");
-    }
     
 }

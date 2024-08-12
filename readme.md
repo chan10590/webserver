@@ -1,7 +1,12 @@
 非阻塞+ET+epoll
-1) 在Channel类中增加回调函数，我们就可以直接根据事件的不同设置不同的回调函数，而不需要像v2.0一样在主函数中用if...else判断
-2) 增加EventLoop类，主要触发的事件在这里处理
-3) 增加Server类，负责服务器的创建和回调函数的设置
+1）在v2.1基础上将Server类监听和连接分离，更加模块化
+2）服务器的工作是依赖一系列的回调函数
+|事件|回调|
+|:-:|:-:|
+|监听套接字发生读事件|Listener::addNewSocket()---新建通信套接字, Server::newConnection(Socket* sock)---为通信套接字设置回调，存放在map中是为了方便后续断开连接|
+|通信套接字发生读事件|Connection::handleCommun()---处理通信请求|
+|客户端断开连接|Server::deleteConnection(Socket* sock)---删除连接|
+
 切换到test目录下，运行以下命令
 ```bash
 make server     //编译服务器

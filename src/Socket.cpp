@@ -1,9 +1,27 @@
 #include "../util/util.h"
 #include "Socket.h"
+#include "InetAddr.h"
+#include <unistd.h>
 #include <sys/socket.h>
 #include <fcntl.h>
 
 namespace web{
+    Socket::Socket() : m_fd(-1) {
+        m_fd = ::socket(AF_INET, SOCK_STREAM, 0);
+        errorExit(m_fd == -1, "socket create fail!");
+    }
+
+    Socket::Socket(int fd) : m_fd(fd) {
+        errorExit(m_fd == -1, "socket create fail!");
+    }
+
+    Socket::~Socket() {
+        if(m_fd != -1) {
+            close(m_fd);
+            m_fd = -1;
+        }
+    }
+
     /*设置端口复用*/
     void Socket::setsockopt(int optval) {
         errorExit(::setsockopt(m_fd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1, "reuse socket fail!");
@@ -24,6 +42,13 @@ namespace web{
         int sfd = ::accept(m_fd, (sockaddr*)&(ipaddr->m_addr), &(ipaddr->m_addr_len));
         errorExit(sfd == -1, "accept fail!");
         return sfd;
+    }
+
+    /*设置非阻塞*/
+    void Socket::setnonblocking(){
+        int flag = fcntl(m_fd, F_GETFL, 0);
+        flag |= O_NONBLOCK;
+        errorExit(fcntl(m_fd, F_SETFL, flag) == -1, "nonblock fail!");
     }
 
     /*访问私有成员变量m_fd（监听套接字）的接口*/
