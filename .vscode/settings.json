@@ -61,8 +61,13 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "typeinfo": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "shared_mutex": "cpp",
+        "cinttypes": "cpp"
     },
+    "C_Cpp.clang_format_style": "file",
+    "editor.formatOnSave": true,
+    "C_Cpp.codeAnalysis.clangTidy.enabled": true,
     "code-runner.runInTerminal": true,
     "files.encoding": "utf8"
 }

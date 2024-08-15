@@ -2,55 +2,45 @@
 #include <iostream>
 
 namespace web {
-    Channel::Channel(EventLoop* evloop, int fd) : m_evloop(evloop), m_fd(fd), m_events(0), m_revents(0), m_in_epoll(false) {
+Channel::Channel(EventLoop* evloop, int fd)
+    : m_evloop(evloop), m_fd(fd), m_events(0), m_ready(0), m_in_epoll(false) {}
 
-    }
+Channel::~Channel() {}
 
-    Channel::~Channel() {
+int Channel::getFd() { return m_fd; }
 
-    }
+uint32_t Channel::getEvents() { return m_events; }
 
-    int Channel::getFd() {
-        return m_fd;
-    }
+uint32_t Channel::getReady() { return m_ready; }
 
-    uint32_t Channel::getEvents() {
-        return m_events;
-    }
+void Channel::setReady(uint32_t ready) { m_ready = ready; }
 
-    uint32_t Channel::getRevents() {
-        return m_revents;
-    }
+bool Channel::getInEpoll() { return m_in_epoll; }
 
-    void Channel::setRevents(uint32_t rev) {
-        m_revents = rev;
-    }
+void Channel::setInEpoll(bool inepoll) { m_in_epoll = inepoll; }
 
-    bool Channel::getInEpoll() {
-        return m_in_epoll;
-    }
+void Channel::setRDCallback(std::function<void()> cb) { m_rdevent_cb = cb; }
 
-    void Channel::setInEpoll() {
-        m_in_epoll = true;
-    }
+void Channel::setWRCallback(std::function<void()> cb) { m_wrevent_cb = cb; }
 
-    void Channel::setCallback(std::function<void()> cb) {
-        m_event_cb = cb;
-    }
-
-    /*设置监听事件为读事件，边沿触发，同时上epoll树*/
-    void Channel::setAddChannel(uint32_t ev) {
-        m_events = ev;
-        m_evloop->addChannel(this);
-    }
-
-    void Channel::handleEvent() {
-        //m_event_cb();
-        if (m_event_cb) {
-        m_event_cb(); // 调用回调函数
-        } else {
-            std::cerr << "Event callback is not set!" << std::endl;
-        }
-    }
-    
+/*设置监听事件为读事件，边沿触发，同时上epoll树*/
+void Channel::setAddChannel(uint32_t ev) {
+    m_events |= ev;
+    m_evloop->addChannel(this);
 }
+
+void Channel::useET() {
+    m_events |= EPOLLET;
+    m_evloop->addChannel(this);
+}
+
+void Channel::handleEvent() {
+    if (m_ready & (EPOLLIN | EPOLLPRI)) {
+        m_rdevent_cb();
+    }
+    if (m_ready & (EPOLLOUT)) {
+        m_wrevent_cb();
+    }
+}
+
+}  // namespace web
