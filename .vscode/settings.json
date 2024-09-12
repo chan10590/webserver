@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        ".clang_format": "yaml",
         "iostream": "cpp",
         "array": "cpp",
         "atomic": "cpp",
@@ -63,7 +64,23 @@
         "typeinfo": "cpp",
         "map": "cpp",
         "shared_mutex": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "bitset": "cpp",
+        "unordered_set": "cpp",
+        "regex": "cpp",
+        "sstream": "cpp",
+        "cassert": "cpp",
+        "types.h": "c",
+        "charconv": "cpp",
+        "chrono": "cpp",
+        "format": "cpp",
+        "iomanip": "cpp",
+        "span": "cpp",
+        "variant": "cpp",
+        "complex": "cpp",
+        "set": "cpp",
+        "typeindex": "cpp",
+        "cerrno": "cpp"
     },
     "C_Cpp.clang_format_style": "file",
     "editor.formatOnSave": true,
