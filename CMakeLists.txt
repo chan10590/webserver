@@ -52,7 +52,7 @@ set(CMAKE_EXECUTABLE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 # Includes.
 set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(INCLUDE_EVENTDRIVER_DIR ${PROJECT_SOURCE_DIR}/include/eventdriver)
-set(INCLUDE_LOG_DIR ${PROJECT_SOURCE_DIR}/include/log)
+set(INCLUDE_LOG_DIR ${PROJECT_SOURCE_DIR}/include/logger)
 set(INCLUDE_HTTPSERVICE_DIR ${PROJECT_SOURCE_DIR}/include/httpservice)
 set(INCLUDE_SERVER_DIR ${PROJECT_SOURCE_DIR}/include/server)
 include_directories(
