@@ -4,5 +4,4 @@
 #include <string>
 
 void errorExit(bool err_cond, const char* str);
-
 #endif  // UTIL_H_
