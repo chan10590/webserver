@@ -3,14 +3,11 @@ IndentWidth: 4
 
 Language: Cpp
 
-ColumnLimit: 100
+ColumnLimit: 120
 IncludeBlocks: Preserve
 
 DerivePointerAlignment: false
 PointerAlignment: Left
-
-# 注释前空2个空格
-SpacesBeforeTrailingComments: 2
 
 # 类访问属性格式
 AccessModifierOffset: -3
@@ -18,7 +15,7 @@ IndentAccessModifiers: false
 # BreakBeforeBraces: Allman
 
 # 头文件顺序
-SortIncludes: true 
+SortIncludes: true
 IncludeCategories:
   - Regex: '^"(.*).h"$'
     Priority: 5  # 项目中的其他 .h 文件
