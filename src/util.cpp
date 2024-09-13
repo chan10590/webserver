@@ -2,8 +2,10 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <cerrno>   // For errno
+#include <cstring>  // For strerror
+#include "Logger.h"
 
-namespace web {
 /* 打印错误，并退出程序
  * @param[in] err_cond 错误条件 bool
  * @param[in] str 错误输出提示 const char*
@@ -14,5 +16,3 @@ void errorExit(bool err_cond, const char* str) {
         exit(1);
     }
 }
-
-}  // namespace web
